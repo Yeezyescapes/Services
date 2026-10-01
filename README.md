@@ -1,28 +1,28 @@
-# Yeezy Escapes Services
+# Yeezy Escapes Business Services
 
-A responsive, accessible static business website with a white brand header, service cards, experience and credentials, client audiences, FAQs, and a consultation inquiry builder. Includes original SVG branding and property artwork; these are new assets, not assets retrieved from the reference site.
+The original Yeezy Escapes Services website, restored from the supplied live page and refined with a champagne logo background, dark plum/black hero and services, gold and blush accents, Yisbeth’s real professional photo, complete credentials, and accessible interactions.
 
-## Local preview
+## Preview
 
-Requires Node.js 20 or later. No dependency installation is needed.
+Requires Node.js 20+. No runtime dependencies or build step.
 
 ```sh
 npm run dev
 ```
 
-The server listens on port 3000 (override with `PORT`). Open the local server in a browser. `npm test` runs browser checks; see the validation section below.
+Preview listens on port 3000; use `PORT` to override it. Deploy `index.html`, `styles.css`, `app.js`, and `assets/` to a static host.
 
-## Publishing
+## Content and assets
 
-Deploy `index.html`, `styles.css`, `app.js`, and `assets/` to any static host. The Node server is for development preview. System fonts and local artwork keep the site self-contained.
+The page, business logo, and Yisbeth Smith photo were retrieved from https://yeezy-services.smithyisbeth.chatgpt.site. The photo was served as PNG data and is saved with a matching `.png` extension. Provider-injected challenge scripts were omitted from the static source. Original service content and Rapid Rentals CRM example are retained. Rapid Rentals links to https://rentrapidnj.com.
 
-## Consultation inquiries
+The About section includes the Business Administration & Accounting degree, 8+ years in property management, 4,000+ doors, and Apple Developer/custom app experience.
 
-Consultation buttons open an email to **info@yeezyescapes.com**. The form validates entries and opens a prepared message in the visitor’s email client, with a copy fallback. It does not automatically send email or confirm appointments.
+## Booking
 
-## Validation
+Direct consultation links open email to `info@yeezyescapes.com`. Meeting buttons open the booking dialog; the form validates details and prepares an email link and copyable message. Visitors must open their email app and send the request. No booking is submitted or confirmed automatically, and no form data is sent to a server. Requested times require email confirmation.
 
-`npm test` uses Playwright and Chromium to check desktop/mobile rendering, navigation, service selection, validation, inquiry generation, FAQ interaction, and console errors. Install the test tool without changing project dependencies:
+## Checks
 
 ```sh
 npm install --no-save --package-lock=false --cache /tmp/yeezy-npm-cache playwright
@@ -30,6 +30,4 @@ npm run dev
 npm test
 ```
 
-Set `CHROMIUM_PATH` if Chromium is not at `/usr/bin/chromium`, and `TEST_BASE_URL` if preview is not on port 3000. Test tooling is not required to run or deploy the site.
-
-The supplied reference URL returned HTTP 403 in the development environment. The design and content were created from the business requirements rather than a verified copy of that page.
+Tests use Chromium at `/usr/bin/chromium` (override `CHROMIUM_PATH`) and preview port 3000 (override `TEST_BASE_URL`). They verify real image loading, service details, all four finder recommendations, booking email contents, modal keyboard closing, reduced motion, and overflow at 320/390/768/1280px.

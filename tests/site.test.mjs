@@ -1,34 +1,23 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
-test('Website desktop and mobile functionality', async () => {
- const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', args: ['--no-sandbox'] });
+test('Original brand, real assets, service finder, and booking work across screen sizes', async () => {
+ const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});
  try {
- const page = await browser.newPage();
- await page.route('https://fonts.googleapis.com/**', route => route.abort());
- const errors = []; page.on('pageerror', error => errors.push(error.message));
- await page.goto(process.env.TEST_BASE_URL || 'http://127.0.0.1:3000', {waitUntil:'domcontentloaded'});
- assert.equal(await page.locator('header').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(255, 255, 255)');
- assert.equal(await page.locator('.service-card').count(), 6);
- assert.match(await page.locator('body').innerText(), /Rapid Rentals/);
- assert.match(await page.locator('nav .button').getAttribute('href'), /mailto:info@yeezyescapes.com/);
- await page.locator('details summary').first().click();
- assert.equal(await page.locator('details').first().getAttribute('open'), '');
- await page.screenshot({path:'/tmp/yeezy-desktop.png',fullPage:true});
- await page.setViewportSize({width:390,height:844});
- assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
- await page.locator('.menu-toggle').click();
- assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
- await page.locator('nav a[href="#services"]').click();
- assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'), 'false');
- await page.locator('input[name="name"]').fill('Test User');
- await page.locator('input[name="email"]').fill('test@example.com');
- await page.locator('#service').selectOption('Property management');
- await page.locator('textarea[name="message"]').fill('Test property consultation');
- await page.locator('button[type="submit"]').click();
- await page.locator('#inquiry-result').waitFor({state:'visible'});
- assert.match(await page.locator('#inquiry-text').inputValue(), /Test property consultation/);
- await page.screenshot({path:'/tmp/yeezy-mobile.png',fullPage:true});
- assert.deepEqual(errors, []);
- } finally { await browser.close(); }
+ const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(process.env.TEST_BASE_URL||'http://127.0.0.1:3000');
+ assert.match(await page.locator('h1').innerText(),/One partner\.\s*More possibility\./);
+ assert.equal(await page.locator('img').evaluateAll(images=>images.every(i=>i.complete&&i.naturalWidth>0)),true);
+ assert.equal(await page.locator('.service').count(),13);
+ assert.equal(await page.locator('a[href="https://rentrapidnj.com"]').count(),1);
+ await page.locator('.service button').first().click();assert.equal(await page.locator('.service button').first().getAttribute('aria-expanded'),'true');
+ for(const [type,title] of [['agent','Lead-to-Move-In System'],['business','Business Clarity Bundle'],['idea','Custom Digital Build'],['landlord','Property Operations Setup']]){await page.locator(`[data-type="${type}"]`).click();assert.equal(await page.locator('#result h3').innerText(),title);}
+ await page.locator('#result .cta').click();await page.locator('#bookName').fill('Test User');await page.locator('#bookEmail').fill('test@example.com');await page.locator('#bookDate').fill('2030-10-01');await page.locator('.book-form button').click();
+ const href=await page.locator('#booking-email').getAttribute('href');assert.match(href,/^mailto:info@yeezyescapes.com/);assert.match(decodeURIComponent(href),/Name: Test User\nEmail: test@example.com/);
+ await page.keyboard.press('Escape');assert.equal(await page.locator('.modal').isVisible(),false);
+ await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:'/tmp/yeezy-original-desktop.png',fullPage:true});
+ for(const width of [320,390,768,1280]){await page.setViewportSize({width,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`No overflow at ${width}`);}
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'/tmp/yeezy-original-mobile.png',fullPage:true});
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.marquee span').evaluate(e=>getComputedStyle(e).animationName),'none');assert.deepEqual(errors,[]);
+ }finally{await browser.close()}
 });

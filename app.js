@@ -1,30 +1,13 @@
-const toggle = document.querySelector('.menu-toggle');
-const nav = document.querySelector('#navigation');
-function closeMenu() { nav.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); toggle.setAttribute('aria-label', 'Open navigation'); }
-toggle.addEventListener('click', () => {
-  const open = nav.classList.toggle('open');
-  toggle.setAttribute('aria-expanded', String(open));
-  toggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
-});
-nav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && nav.classList.contains('open')) { closeMenu(); toggle.focus(); } });
-window.addEventListener('resize', () => { if (window.innerWidth > 800) closeMenu(); });
-document.querySelectorAll('[data-service]').forEach(link => link.addEventListener('click', () => { document.querySelector('#service').value = link.dataset.service; }));
-document.querySelector('#year').textContent = new Date().getFullYear();
-const form = document.querySelector('#consultation-form');
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  if (!form.reportValidity()) return;
-  const data = new FormData(form);
-  document.querySelector('#inquiry-text').value = `Consultation inquiry — Yeezy Escapes Services\n\nName: ${data.get('name').trim()}\nEmail: ${data.get('email').trim()}\nService: ${data.get('service')}\n\nProject details:\n${data.get('message').trim()}`;
-  const result = document.querySelector('#inquiry-result');
-  result.hidden = false;
-  document.querySelector('#copy-status').textContent = '';
-  result.focus();
-  document.querySelector('#email-inquiry').href = 'mailto:info@yeezyescapes.com?subject=' + encodeURIComponent('Consultation inquiry: ' + data.get('service')) + '&body=' + encodeURIComponent(document.querySelector('#inquiry-text').value);
-});
-document.querySelector('#copy-inquiry').addEventListener('click', async () => {
-  const text = document.querySelector('#inquiry-text');
-  try { await navigator.clipboard.writeText(text.value); document.querySelector('#copy-status').textContent = 'Copied. Share your inquiry through your existing contact channel.'; }
-  catch { text.focus(); text.select(); document.querySelector('#copy-status').textContent = 'Select and copy the inquiry above.'; }
-});
+const solutions={landlord:{title:'Property Operations Setup',copy:'Bring your rent, tenants, bills, and owner reporting into one clear routine.',items:['Rent roll and balance tracking','Collections & tenant follow-up','Utility and vendor organization','Monthly owner-ready reporting']},agent:{title:'Lead-to-Move-In System',copy:'Keep every lead, showing, applicant, and next step visible from the first call to keys.',items:['Lead & showing pipeline','Applicant and approval flow','Deposit & move-in tracking','Agent-friendly dashboards']},business:{title:'Business Clarity Bundle',copy:'Get your day-to-day business organized so you can see your money, support your team, and grow with confidence.',items:['Bookkeeping & QuickBooks support','Payroll process setup','Business forms & client workflows','Marketing and online presence']},idea:{title:'Custom Digital Build',copy:'Turn a process you are doing by hand into a website, portal, tracker, or dashboard designed around you.',items:['Custom website or client portal','Lead forms and scheduling','Branded calculators & tools','Workflow automation planning']}};
+    document.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');document.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); let s=solutions[b.dataset.type],r=document.getElementById('result');r.innerHTML='<div class="tag">A strong starting point</div><h3>'+s.title+'</h3><p>'+s.copy+'</p><ul>'+s.items.map(i=>'<li>'+i+'</li>').join('')+'</ul><button class="cta" onclick="openModal()">Ask about this setup</button>';}));
+
+function toggle(btn){const card=btn.closest('.service');const open=card.classList.toggle('open');btn.textContent=open?'Show less −':'What’s included +';btn.setAttribute('aria-expanded',String(open))}
+let returnFocus;
+function openModal(){returnFocus=document.activeElement;document.getElementById('modal').classList.add('show');document.body.classList.add('modal-open');const date=new Date();date.setMinutes(date.getMinutes()-date.getTimezoneOffset());document.getElementById('bookDate').min=date.toISOString().slice(0,10);document.getElementById('bookName').focus()}
+function closeModal(){document.getElementById('modal').classList.remove('show');document.body.classList.remove('modal-open');returnFocus?.focus()}
+function sendBooking(e){e.preventDefault();const form=e.target;if(!form.reportValidity())return;const name=document.getElementById('bookName').value.trim(),email=document.getElementById('bookEmail').value.trim(),service=document.getElementById('bookService').value,date=document.getElementById('bookDate').value,time=document.getElementById('bookTime').value;const body=`Name: ${name}\nEmail: ${email}\nService: ${service}\nPreferred day: ${date}\nPreferred time: ${time} (please confirm timezone)\n\nPlease confirm my meeting.`;document.getElementById('booking-email').href='mailto:info@yeezyescapes.com?subject='+encodeURIComponent('Meeting request — '+service)+'&body='+encodeURIComponent(body);document.getElementById('booking-message').value=body;document.getElementById('booking-result').hidden=false;document.getElementById('booking-email').focus()}
+document.querySelectorAll('.opt').forEach(b=>b.setAttribute('aria-pressed',String(b.classList.contains('selected'))));
+document.querySelectorAll('.service button').forEach(b=>b.setAttribute('aria-expanded','false'));
+document.getElementById('result').setAttribute('aria-live','polite');
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+document.addEventListener('keydown',e=>{const modal=document.getElementById('modal');if(!modal.classList.contains('show'))return;if(e.key==='Escape'){closeModal();return}if(e.key==='Tab'){const items=[...modal.querySelectorAll('button,a,input,select,textarea')].filter(x=>x.getClientRects().length);const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
