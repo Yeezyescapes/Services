@@ -15,4 +15,21 @@ document.addEventListener('keydown',e=>{const modal=document.getElementById('mod
 /* Soft scroll-in reveals for the visual sections. */
 document.querySelectorAll('.intro,.services,.feature,.simple-contact').forEach(section=>section.classList.add('reveal'));
 const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('show');revealObserver.unobserve(entry.target)}}),{threshold:.12});
-document.querySelectorAll('.reveal').forEach(section=>revealObserver.observe(section));
+document.querySelectorAll('.reveal').forEach(section=>revealObserver.observe(section));document.head.insertAdjacentHTML("beforeend", `<style>
+.intro{position:relative;isolation:isolate;overflow:hidden}
+.intro:before{content:"";position:absolute;inset:-35%;z-index:-1;background:conic-gradient(from 210deg at 74% 36%,transparent 0 18%,#e9b55b28 23%,transparent 31% 51%,#df709d20 58%,transparent 67%);filter:blur(14px);animation:yeGlow 14s ease-in-out infinite}
+.intro>*{position:relative;z-index:1}
+.services,.feature,.simple-contact{position:relative}
+.services:before,.feature:before{content:"✦";position:absolute;color:#e9b55b;opacity:.45;font-size:5rem;right:6%;top:8%;animation:yeFloat 4s ease-in-out infinite}
+button,a{transition:transform .2s ease,box-shadow .2s ease}
+button:hover,a:hover{transform:translateY(-3px)}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.show{opacity:1;transform:none}
+@keyframes yeGlow{50%{transform:rotate(14deg) scale(1.12)}}
+@keyframes yeFloat{50%{transform:translateY(-12px) rotate(8deg)}}
+@media(prefers-reduced-motion:reduce){.intro:before,.services:before,.feature:before{animation:none}.reveal{opacity:1;transform:none}}
+</style>`);
+
+document.querySelectorAll(".intro,.services,.feature,.simple-contact").forEach(section=>section.classList.add("reveal"));
+const yeezyReveal=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("show");yeezyReveal.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(section=>yeezyReveal.observe(section));
