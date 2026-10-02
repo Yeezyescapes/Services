@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/book-consultation.js": { "maxDuration": 10 }
+  }
+}
