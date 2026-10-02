@@ -11,3 +11,8 @@ document.querySelectorAll('.service button').forEach(b=>b.setAttribute('aria-exp
 document.getElementById('result').setAttribute('aria-live','polite');
 document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
 document.addEventListener('keydown',e=>{const modal=document.getElementById('modal');if(!modal.classList.contains('show'))return;if(e.key==='Escape'){closeModal();return}if(e.key==='Tab'){const items=[...modal.querySelectorAll('button,a,input,select,textarea')].filter(x=>x.getClientRects().length);const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+
+/* Soft scroll-in reveals for the visual sections. */
+document.querySelectorAll('.intro,.services,.feature,.simple-contact').forEach(section=>section.classList.add('reveal'));
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('show');revealObserver.unobserve(entry.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(section=>revealObserver.observe(section));
