@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "Yeezy Escapes Services business website",
-  "scripts": { "dev": "node server.mjs", "start": "node server.mjs", "test": "node --test tests/*.test.mjs" },
-  "engines": { "node": ">=20" }
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }
