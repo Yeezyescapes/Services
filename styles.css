@@ -17,3 +17,10 @@
 @media(max-width:800px){.brand img{width:180px}.credentials{grid-template-columns:1fr 1fr}.navlinks a.mini{font-size:.8rem}.hero-body{gap:35px}}@media(max-width:520px){.brand{padding:8px 10px}.brand img{width:145px}.credentials{grid-template-columns:1fr}.navlinks .mini{max-width:120px;text-align:center;line-height:1.3}.book-form{grid-template-columns:1fr}.case-card{padding:18px}.metrics .metric strong{font-size:1.1rem}.hero h1{font-size:3.35rem}.command:before{font-size:.58rem}.modal-box{padding:24px 20px}.proof strong{font-size:1.1rem}.portrait-badge{width:110px;height:110px;font-size:.95rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.marquee span{animation:none}*{transition:none!important}}
 .nav-book{background:transparent;color:#f7edf9;cursor:pointer;font:inherit}.nav-book:hover{color:#f2c47b}.cta:disabled{cursor:wait;opacity:.72;transform:none}.book-form textarea{width:100%;margin-top:5px;border:1px solid var(--line);border-radius:9px;padding:11px;font:inherit;background:#fff;resize:vertical}.book-form textarea:focus{outline:2px solid #8f45a5;outline-offset:2px}
+.founder-portrait{position:relative;isolation:isolate;height:clamp(420px,44vw,560px);overflow:hidden;border:1px solid #e6b76688;border-radius:18px;background:#d9c5b0;box-shadow:0 25px 70px #0006}
+.founder-portrait:after{position:absolute;z-index:0;inset:35% 0 0;content:"";background:linear-gradient(transparent,#160d1cdd)}
+.founder-portrait img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 24%}
+.founder-caption{position:absolute;z-index:1;right:24px;bottom:24px;left:24px;display:grid;gap:5px;color:white;text-shadow:0 2px 12px #0008}
+.founder-caption strong{font:700 clamp(1.8rem,3vw,2.45rem)/1 Georgia,serif}
+.founder-caption span{color:#f5d58c;font-size:.78rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:520px){.founder-portrait{height:min(118vw,460px)}.founder-caption{right:18px;bottom:18px;left:18px}.founder-caption span{font-size:.66rem;letter-spacing:.07em}}
